@@ -5,27 +5,6 @@ import styles from "@/styles/Home.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// "_id": "642ed21830db7a89e5f708d1",
-// "Quote": "Don't cry because it's over, smile because it happened.",
-// "Author": "Dr. Seuss",
-// "Popularity": "0.1556661556661556",
-// "Category": "happiness",
-// "Tags": [
-// "attributed-no-source",
-// "cry",
-// "crying",
-// "experience",
-// "happiness",
-// "joy",
-// "life",
-// "misattributed-dr-seuss",
-// "optimism",
-// "sadness",
-// "smile",
-// "smiling "
-// ],
-// "Id": "1",
-// "Color": "7388430"
 export type ContentType = {
   _id: string;
   Quote: string;
@@ -46,6 +25,7 @@ export function QuateFrame({ data }: { data: ContentType }) {
     data.Color.slice(2, 4),
     data.Color.slice(4, 7)
   );
+  const isMobile = window.innerWidth < 600;
   return (
     <div
       style={{
@@ -58,18 +38,24 @@ export function QuateFrame({ data }: { data: ContentType }) {
     >
       <div
         style={{
-          width: "50vh",
+          width: isMobile?"80vh":"50vh",
           display: "flex",
           flexDirection: "column",
-          height: "50vh",
+          height: isMobile?"50vh":"40vh",
+          borderRadius: "2rem",
           border: "1px solid black",
           padding: "2rem",
-          backgroundColor: `rgb(${data.Color.slice(0, 2)},${data.Color.slice(
-            2,
-            4
-          )},${data.Color.slice(4, 7)})`,
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          backgroundColor: `
+          rgb(${data.Color.slice(0, 2)},
+          ${data.Color.slice(2, 4)},
+          ${data.Color.slice(4, 7)})`,
+          color: `rgb(${parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255}
+          ,${parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255}
+          ,${255 - parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255})`,
         }}
       >
+        Quote of the day
         <div
           style={{
             font: "small-caption",
@@ -77,7 +63,7 @@ export function QuateFrame({ data }: { data: ContentType }) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "70%",
+            height: "80%",
             textAlign: "justify",
           }}
         >
@@ -85,17 +71,16 @@ export function QuateFrame({ data }: { data: ContentType }) {
         </div>
         <div
           style={{
-            height: "30%",
+            height: "20%",
             font: "small-caption",
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
             fontSize: "1.5rem",
             textAlign: "justify",
-            
           }}
         >
-          {data.Author}
+          - {data.Author}
         </div>
       </div>
     </div>
