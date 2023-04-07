@@ -61,6 +61,7 @@ export function QuateFrame({ data }: { data: ContentType }) {
           </p>
         </blockquote>
         <figcaption className="flex items-center justify-center mt-6 space-x-3">
+          <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
             <cite
               className="pr-3 font-medium"
               style={{
@@ -73,6 +74,7 @@ export function QuateFrame({ data }: { data: ContentType }) {
             >
               {data.Author}
             </cite>
+          </div>
         </figcaption>
       </figure>
     </div>
