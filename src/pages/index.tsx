@@ -82,9 +82,7 @@ export function QuateFrame({ data }: { data: ContentType }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/quotes `|| "http://localhost:3000/api/quotes"
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/quotes`);
   const data = await res.json();
   return {
     props: {
