@@ -25,64 +25,56 @@ export function QuateFrame({ data }: { data: ContentType }) {
     data.Color.slice(2, 4),
     data.Color.slice(4, 7)
   );
-  const isMobile = window.innerWidth < 600;
   return (
     <div
+      className="flex flex-col items-center justify-center min-h-screen py-2"
       style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
+        background: `rgb(${data.Color.slice(0, 2)},${data.Color.slice(
+          2,
+          4
+        )},${data.Color.slice(4, 7)})`,
       }}
     >
-      <div
-        style={{
-          width: isMobile?"80vh":"50vh",
-          display: "flex",
-          flexDirection: "column",
-          height: isMobile?"50vh":"40vh",
-          borderRadius: "2rem",
-          border: "1px solid black",
-          padding: "2rem",
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-          backgroundColor: `
-          rgb(${data.Color.slice(0, 2)},
-          ${data.Color.slice(2, 4)},
-          ${data.Color.slice(4, 7)})`,
-          color: `rgb(${parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255}
-          ,${parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255}
-          ,${255 - parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255})`,
-        }}
-      >
-        Quote of the day
-        <div
-          style={{
-            font: "small-caption",
-            fontSize: "1.5rem",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            textAlign: "justify",
-          }}
+      <figure className="max-w-screen-md mx-auto text-center">
+        <svg
+          aria-hidden="true"
+          className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600"
+          viewBox="0 0 24 27"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {data.Quote}
-        </div>
-        <div
-          style={{
-            height: "20%",
-            font: "small-caption",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            fontSize: "1.5rem",
-            textAlign: "justify",
-          }}
-        >
-          - {data.Author}
-        </div>
-      </div>
+          <path
+            d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
+            fill="currentColor"
+          />
+        </svg>
+        <blockquote>
+          <p
+            className="text-2xl italic font-medium "
+            style={{
+              color: `rgb(${parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255},${
+                parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255
+              },${parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255})`,
+            }}
+          >
+            {`" ${data.Quote} "`}
+          </p>
+        </blockquote>
+        <figcaption className="flex items-center justify-center mt-6 space-x-3">
+            <cite
+              className="pr-3 font-medium"
+              style={{
+                color: `rgb(${
+                  parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255
+                },${parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255},${
+                  parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255
+                })`,
+              }}
+            >
+              {data.Author}
+            </cite>
+        </figcaption>
+      </figure>
     </div>
   );
 }
