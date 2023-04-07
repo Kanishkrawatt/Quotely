@@ -19,6 +19,7 @@ export default function Home() {
       .get("/api/quotes")
       .then((res) => {
         const data = res.data;
+        console.log(data);
         setData(data);
       })
       .catch((err) => console.log(err));
