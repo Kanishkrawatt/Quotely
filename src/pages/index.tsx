@@ -1,9 +1,6 @@
-import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import React from "react";
+import axios from "axios";
 
 export type ContentType = {
   _id: string;
@@ -15,24 +12,29 @@ export type ContentType = {
   Id: string;
   Color: string;
 };
-export default function Home({ data }: { data: ContentType }) {
-  return <QuateFrame data={data} />;
+export default function Home() {
+  const [data, setData] = React.useState<ContentType>();
+  React.useEffect(() => {
+    axios
+      .get("/api/quotes")
+      .then((res) => {
+        const data = res.data;
+        setData(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  if (!data) return <div>Loading...</div>;
+  return <QuoteFrame data={data!} />;
 }
 
-export function QuateFrame({ data }: { data: ContentType }) {
-  console.log(
-    data.Color.slice(0, 2),
-    data.Color.slice(2, 4),
-    data.Color.slice(4, 7)
-  );
+export function QuoteFrame({ data }: { data: ContentType }) {
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen py-2"
       style={{
-        background: `rgb(${data.Color.slice(0, 2)},${data.Color.slice(
-          2,
-          4
-        )},${data.Color.slice(4, 7)})`,
+        background: `rgb(${data.Color.slice(0, 2)},
+        ${data.Color.slice(2, 4)},
+        ${data.Color.slice(4, 7)})`,
       }}
     >
       <figure className="max-w-screen-md mx-auto text-center">
@@ -79,14 +81,4 @@ export function QuateFrame({ data }: { data: ContentType }) {
       </figure>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/quotes`);
-  const data = await res.json();
-  return {
-    props: {
-      data,
-    },
-  };
 }
