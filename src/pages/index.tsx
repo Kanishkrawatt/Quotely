@@ -22,7 +22,14 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
   }, []);
-  if (!data) return <div>Loading...</div>;
+  if (!data)
+    return (
+      <div className="flex h-[100vh] w-full items-center justify-center space-x-2">
+        <div className="w-5 h-5 rounded-full animate-pulse bg-black "></div>
+        <div className="w-5 h-5 rounded-full animate-pulse bg-black "></div>
+        <div className="w-5 h-5 rounded-full animate-pulse bg-black"></div>
+      </div>
+    );
   return <QuoteFrame data={data!} />;
 }
 
