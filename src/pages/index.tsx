@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import React from "react";
 import axios from "axios";
 
@@ -16,11 +15,10 @@ export default function Home() {
   const [data, setData] = React.useState<ContentType>();
   React.useEffect(() => {
     axios
-      .get("/api/quotes")
+      .get(process.env.NEXT_PUBLIC_API_URL!)
       .then((res) => {
         const data = res.data;
-        console.log(data);
-        setData(data);
+        setData(data[0]);
       })
       .catch((err) => console.log(err));
   }, []);
