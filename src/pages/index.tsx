@@ -18,10 +18,36 @@ export default function Home() {
       .get(process.env.NEXT_PUBLIC_API_URL!)
       .then((res) => {
         const data = res.data;
-        setData(data[0]);
+        setData(data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  function hexToRgb(hex: string) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return [r, g, b];
+  }
+
+  function getRelativeLuminance(rgb: number[]) {
+    const [r, g, b] = rgb;
+    const [rsRGB, gsRGB, bsRGB] = [r / 255, g / 255, b / 255];
+
+    const [rl, gl, bl] = [
+      rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4),
+      gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4),
+      bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4),
+    ];
+
+    return 0.2126 * rl + 0.7152 * gl + 0.0722 * bl;
+  }
+
+  const TextColor =
+    getRelativeLuminance(hexToRgb(`#${data?.Color}`)) > 0.179
+      ? "black"
+      : "white";
+
   if (!data)
     return (
       <div className="flex h-[100vh] w-full items-center justify-center space-x-2">
@@ -30,24 +56,31 @@ export default function Home() {
         <div className="w-5 h-5 rounded-full animate-pulse bg-black"></div>
       </div>
     );
-  return <QuoteFrame data={data!} />;
+  return <QuoteFrame TextColor={TextColor} data={data!} />;
 }
 
-export function QuoteFrame({ data }: { data: ContentType }) {
+export function QuoteFrame({
+  data,
+  TextColor,
+}: {
+  data: ContentType;
+  TextColor: string;
+}) {
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen py-2"
       style={{
-        background: `rgb(${data.Color.slice(0, 2)},
-        ${data.Color.slice(2, 4)},
-        ${data.Color.slice(4, 7)})`,
+        background: `#${data.Color}`,
       }}
     >
       <figure className="max-w-screen-md mx-auto text-center">
         <svg
           aria-hidden="true"
-          className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600"
+          className="w-12 h-12 mx-auto mb-3 "
           viewBox="0 0 24 27"
+          style={{
+            color: TextColor,
+          }}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -60,9 +93,7 @@ export function QuoteFrame({ data }: { data: ContentType }) {
           <p
             className="text-2xl italic font-medium "
             style={{
-              color: `rgb(${parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255},${
-                parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255
-              },${parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255})`,
+              color: TextColor,
             }}
           >
             {`" ${data.Quote} "`}
@@ -73,11 +104,7 @@ export function QuoteFrame({ data }: { data: ContentType }) {
             <cite
               className="pr-3 font-medium"
               style={{
-                color: `rgb(${
-                  parseInt(data.Color.slice(0, 2)) > 127 ? 0 : 255
-                },${parseInt(data.Color.slice(2, 4)) > 127 ? 0 : 255},${
-                  parseInt(data.Color.slice(4, 7)) > 127 ? 0 : 255
-                })`,
+                color: TextColor,
               }}
             >
               {data.Author}
