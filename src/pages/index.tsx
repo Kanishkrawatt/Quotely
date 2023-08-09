@@ -20,7 +20,7 @@ export default function Home() {
         const data = res.data;
         setData(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   function hexToRgb(hex: string) {
